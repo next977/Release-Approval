@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="ZDCMMGW_GISG_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="Likp" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Vbeln"/>
+                </Key>
+                <Property Name="Vbeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="납품번호" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ternr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="오더번호" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Vdatu" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="납품일" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Sflag" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="출고상태 플래그" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="LipsA" Relationship="ZDCMMGW_GISG_SRV.Likp_Lips" FromRole="FromRole_Likp_Lips" ToRole="ToRole_Likp_Lips"/>
+            </EntityType>
+            <EntityType Name="Lips" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Vbeln"/>
+                    <PropertyRef Name="Posnr"/>
+                </Key>
+                <Property Name="Vbeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="납품번호" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Posnr" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="품목번호" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Fertid" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="제품 코드" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Meinm" Type="Edm.String" Nullable="false" MaxLength="13" sap:unicode="false" sap:unit="Meins" sap:label="수량" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Lgort" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="창고 코드" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Feea" Type="Edm.String" Nullable="false" MaxLength="13" sap:unicode="false" sap:unit="Meins" sap:label="창고 재고 수량" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Meins" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="단위" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="unit-of-measure"/>
+                <NavigationProperty Name="LikpA" Relationship="ZDCMMGW_GISG_SRV.Likp_Lips" FromRole="ToRole_Likp_Lips" ToRole="FromRole_Likp_Lips"/>
+            </EntityType>
+            <Association Name="Likp_Lips" sap:content-version="1">
+                <End Type="ZDCMMGW_GISG_SRV.Likp" Multiplicity="1" Role="FromRole_Likp_Lips"/>
+                <End Type="ZDCMMGW_GISG_SRV.Lips" Multiplicity="*" Role="ToRole_Likp_Lips"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_Likp_Lips">
+                        <PropertyRef Name="Vbeln"/>
+                    </Principal>
+                    <Dependent Role="ToRole_Likp_Lips">
+                        <PropertyRef Name="Vbeln"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="ZDCMMGW_GISG_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="LikpSet" EntityType="ZDCMMGW_GISG_SRV.Likp" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <EntitySet Name="LipsSet" EntityType="ZDCMMGW_GISG_SRV.Lips" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+                <AssociationSet Name="Likp_LipsSet" Association="ZDCMMGW_GISG_SRV.Likp_Lips" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="LikpSet" Role="FromRole_Likp_Lips"/>
+                    <End EntitySet="LipsSet" Role="ToRole_Likp_Lips"/>
+                </AssociationSet>
+            </EntityContainer>
+            <atom:link rel="self" href="http://210.16.199.141:8001/sap/opu/odata/sap/ZDCMMGW_GISG_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="http://210.16.199.141:8001/sap/opu/odata/sap/ZDCMMGW_GISG_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

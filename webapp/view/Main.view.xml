@@ -1,0 +1,271 @@
+<mvc:View controllerName="SYNC.zdcmmui5gisg.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:m="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:semantic="sap.m.semantic"
+    xmlns:f="sap.f"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:t="sap.ui.table">
+    <f:DynamicPage id="dynamicPageId" headerExpanded="{/headerExpanded}" toggleHeaderOnTitleClick="{/titleClickable}" >
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:content>
+                </f:content>
+                <f:actions>
+                </f:actions>
+                <f:navigationActions>
+                </f:navigationActions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+        <f:DynamicPageHeader pinnable="true">
+             <l:Grid id="idGrid" vSpacing="1" hSpacing="1">
+                    <l:content>
+                        <l:VerticalLayout id="verLay" width="20rem">
+                            <l:layoutData>
+                                <l:GridData id="idGrDat1" span="L4 M8 S12"/>
+                            </l:layoutData>
+                            <l:content>
+                                <m:Label id="ALabel" text="결재 담당자:" labelFor="startDateEvent" vAlign="Top"/> 
+                                <m:Input value="김수연" editable="false" />
+                            </l:content>
+                        </l:VerticalLayout>
+                        <l:VerticalLayout id="verLay2" width="30rem">
+                            <l:layoutData>
+                                 <l:GridData id="idGrDat2" span="L4 M8 S12"/>
+                            </l:layoutData>
+                            <l:content>
+                                <m:Label id="ALabel1" text="납품 일자:" labelFor="startDateEvent" vAlign="Top"/>
+                                <m:HBox alignItems="Center" width="100%">
+                                    <m:VBox width="30%">
+                                        <m:DatePicker id="startDateEvent" width="100%" placeholder="시작 월 입력 "
+                                                      valueFormat="yyyy-MM" displayFormat="yyyy-MM" change="handleChange" class="sapUiSmallMarginBottom" />
+                                    </m:VBox>
+                                    <m:Text text= "~" width="100%" textAlign="Begin"
+                                        class="sapUiTinyMarginBegin sapUiTinyMarginEnd"/>
+                                    <m:VBox width="30%">
+                                        <m:DatePicker id="endDateEvent" width="100%" placeholder="끝 월 입력"
+                                                      valueFormat="yyyy-MM" displayFormat="yyyy-MM" change="handleChange" class="sapUiSmallMarginBottom" />
+                                        
+                                    </m:VBox>
+                                </m:HBox>                                                                   
+                            </l:content>
+                        </l:VerticalLayout>
+                        <l:VerticalLayout id="verLay3" width="10rem" >
+                            <l:layoutData>
+                                 <l:GridData id="idGrDat3" span="L4 M2 S12"/>
+                            </l:layoutData>
+                            <l:content>
+                                <m:Label id="ALabel2" text="" labelFor="startDateEvent" vAlign="Top"/>
+                                <m:HBox alignItems="Center" width="100%">
+                                    <m:Button text="검색" press="onPress" />
+                                </m:HBox>
+                            </l:content>
+                        </l:VerticalLayout>
+                    </l:content>
+                </l:Grid>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+                <m:IconTabBar
+				id="iconTabBar"
+				select=".onQuickFilter"
+				expandable="false"
+                selectedKey="getApproval">
+				<m:items>
+					<m:IconTabFilter
+						key="all"
+						showAll="true"
+						count="{worklistView>/countAll}"
+						text="{i18n>All}"/>
+					<m:IconTabSeparator/>
+					<m:IconTabFilter
+						key="approve"
+						icon="sap-icon://message-success"
+						iconColor="Positive"
+						count="{worklistView>/approve}"
+						text="{i18n>Approve}"/>
+					<m:IconTabFilter
+						key="getApproval"
+						icon="sap-icon://message-warning"
+						iconColor="Critical"
+						count="{worklistView>/getApproval}"
+						text="{i18n>getApproval}"/>
+					<m:IconTabFilter
+						key="companion"
+						icon="sap-icon://message-error"
+						iconColor="Negative"
+						count="{worklistView>/companion}"
+						text="{i18n>Companion}"/>
+				</m:items>
+				<m:content>
+                        <m:Table
+                            id="likpTable"
+                            width="auto"
+                            mode="SingleSelectMaster"
+                            items="{
+                                path: 'odataModel>/LikpSet',
+                                sorter: {
+                                    path: 'odataModel>Vbeln',
+                                    descending: false
+                                }
+                            }"
+                            noDataText="{worklistView>/tableNoDataText}"
+                            busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+                            growing="true"
+                            growingThreshold="5"
+                            growingScrollToLoad="true"
+                            updateFinished=".onUpdateFinished"
+                            selectionChange='.onSelectionChange'>
+                            <!-- <m:headerToolbar>
+                                <m:Toolbar>
+                                    <m:Title id="tableHeader" text="{worklistView>/worklistTableTitle}"/>
+                                    <m:ToolbarSpacer />
+                                    <m:SearchField
+                                        id="searchField"
+                                        tooltip="{i18n>worklistSearchTooltip}"
+                                        search=".onSearch"
+                                        width="auto">
+                                    </m:SearchField>
+                                </m:Toolbar>
+                            </m:headerToolbar>   -->
+                                <m:columns>
+                                    <m:Column id="VbelnColumn">
+                                        <m:Text
+                                            id="VbelnNameColumnTitle"
+                                            text="{i18n>Vbeln}"/>
+                                    </m:Column>
+                                     <m:Column id="TernrColumn">
+                                        <m:Text
+                                            id="TernrNameColumn"
+                                            text="{i18n>Ternr}"/>
+                                    </m:Column>
+                                    <m:Column id="VdatuColumn">
+                                        <m:Text
+                                            id="VdatuNameColumn"
+                                            text="{i18n>Vdatu}"/>
+                                    </m:Column>
+                                    <!-- <m:Column id="SflagColumn">
+                                        <m:Text
+                                            id="SflagNameColumn"
+                                            text="{i18n>Sflag}"/>
+                                    </m:Column> -->
+                                </m:columns>
+                                <m:items>
+                                    <m:ColumnListItem>
+                                            <m:cells>
+                                            <m:Text text = "{odataModel>Vbeln}"/>
+                                            <m:Text text = "{odataModel>Ternr}"/>
+                                            <m:Text text = "{odataModel>Vdatu}"/>
+                                            <!-- <m:Text text = "{odataModel>Sflag}"/> -->
+
+                                        </m:cells>
+                                    </m:ColumnListItem>
+                                </m:items>
+                         </m:Table>
+                         <m:Table
+                            id="lipsTable"
+                            width="auto"
+                            items="{
+                                path: 'LipsA>/'
+                            }"
+                            noDataText="{worklistView>/tableNoDataText}"
+                            busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+                            growing="true"
+                            growingScrollToLoad="true"
+                            updateFinished=".onUpdateFinished1">
+                                <m:columns>
+                                    <m:Column id="Vbeln1Column">
+                                        <m:Text
+                                            id="Vbeln1NameColumnTitle"
+                                            text="{i18n>Vbeln}"/>
+                                    </m:Column>
+                                     <m:Column id="PosnrColumn">
+                                        <m:Text
+                                            id="PosnrNameColumn"
+                                            text="{i18n>Posnr}"/>
+                                    </m:Column>
+                                    <m:Column id="FertidColumn">
+                                        <m:Text
+                                            id="FertidNameColumn"
+                                            text="{i18n>Fertid}"/>
+                                    </m:Column>
+                                    <m:Column id="FertnameColumn">
+                                        <m:Text
+                                            id="FertnameidColumn"
+                                            text="{i18n>Fertname}"/>
+                                    </m:Column>
+                                    <m:Column id="MeinmColumn">
+                                        <m:Text
+                                            id="MeinmNameColumn"
+                                            text="{i18n>Meinm}"/>
+                                    </m:Column>
+                                    <m:Column id="LgortmColumn">
+                                        <m:Text
+                                            id="LgortNameColumn"
+                                            text="{i18n>Lgort}"/>
+                                    </m:Column>
+                                    <m:Column id="LotypeColumn">
+                                        <m:Text
+                                            id="LotypeNameColumn"
+                                            text="{i18n>Lotype}"/>
+                                    </m:Column>
+                                    <m:Column id="FeeamColumn">
+                                        <m:Text
+                                            id="FeeaNameColumn"
+                                            text="{i18n>Feea}"/>
+                                    </m:Column>
+                                    <!-- <m:Column id="MeinsmColumn">
+                                        <m:Text
+                                            id="MeinsNameColumn"
+                                            text="{i18n>Meins}"/>
+                                    </m:Column> -->
+                                </m:columns>
+                                <m:items>
+                                    <m:ColumnListItem>
+                                            <m:cells>
+                                            <m:Text text = "{LipsA>Vbeln}"/>
+                                            <m:Text text = "{LipsA>Posnr}"/>
+                                            <m:Text text = "{LipsA>Fertid}"/>
+                                            <m:Text text = "{LipsA>Fertname}"/> 
+                                            <m:ObjectNumber
+                                                unit="{LipsA>Meins}"
+                                                number="{
+                                                path: 'LipsA>Meinm',
+                                                formatter: '.formatter.numberUnit'
+                                                }"/>
+                                                
+                                            <m:Text text = "{LipsA>Lgort}"/>
+                                            <m:Text text = "{LipsA>Lotype}"/>
+                                            <m:ObjectNumber
+                                                unit="{LipsA>Fmeins}"
+                                                number="{
+                                                path: 'LipsA>Feea',
+                                                formatter: '.formatter.numberUnit'
+                                                }"/>
+
+                                            <!-- <m:Text text = "{LipsA>Meins}"/> -->
+                                        </m:cells>
+                                    </m:ColumnListItem>
+                                </m:items>
+                         </m:Table>
+				</m:content>
+			</m:IconTabBar>
+        </f:content>
+
+        <f:footer>
+				<m:OverflowToolbar>
+					<m:Button icon="sap-icon://message-popup"
+							text="{/messagesLength}"
+							type="Emphasized"
+							press="onMessageButtonPress"
+							visible="{= !!${/messagesLength}}"/>
+					<m:ToolbarSpacer/>
+					<m:Button type="Accept" text="승인"
+                             press="onPressAccet" />
+					<m:Button type="Reject" text="반려"
+                             press="onPressReject" />
+				</m:OverflowToolbar>
+			</f:footer>
+    </f:DynamicPage>
+</mvc:View>
